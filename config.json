@@ -1,0 +1,11 @@
+{
+    "height": 30,
+    "width": 100,
+    "header_heigth": 7,
+    "header_text_position": 6,
+    "small_paddle_size": 10,
+    "large_paddle_size": 16,
+    "paddle_bottom_padding": 3,
+    "paddle_speed": 2,
+    "max_lives": 3
+}
