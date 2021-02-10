@@ -50,8 +50,7 @@ class Input:
                 text = 'enter'
             else:
                 text = 'none'
-            if text != 'none':
-                sleep(timeout)
+            sleep(timeout)
             return text
         except TimeoutError:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)

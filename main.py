@@ -44,16 +44,14 @@ def main():
 
                 # Get input
                 ip = nbinput.get_parsed_input(0.07)
-                if ip == 'none':
-                    continue
-                elif ip == 'quit':
+                if ip == 'quit':
                     os.system('clear')
                     cursor.show()
                     exit()
-                elif ip != 'space':
+                if ip in ['left', 'right']:
                     paddle.move(ip, ball)
-                else:
-                    ball.launch()
+                elif ip == 'space':
+                        ball.launch()
                 board.update(paddle,ball)
                 utilities.print_frame(score, paddle.lives,board.content,ball)
                 
