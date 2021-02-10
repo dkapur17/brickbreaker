@@ -1,11 +1,13 @@
 import json
 import os
+from time import sleep
 
 import header
 import utilities
 import menu
 from board import Board
 from paddle import Paddle
+from ball import Ball
 
 def main():
     # Get configurations
@@ -27,26 +29,41 @@ def main():
     cursor.hide()
 
     paddle=Paddle(SMALL_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
-    board=Board(HEIGHT,WIDTH, paddle)
+    board=Board(HEIGHT,WIDTH)
     score=0
 
-    # Game Loop
-    while True:
-        board.update(paddle)
-        utilities.print_frame(score, paddle.lives,board.content)
-        # Get input
-        ip = nbinput.get_parsed_input(0.1)
-        if ip == 'quit':
-            os.system('clear')
-            cursor.show()
-            exit()
-        elif ip != 'space':
-            paddle.move(ip)
-        else:
-            # Handle launch
-            continue
-        # Update paddle position
-    cursor.show()
+    try:
+        os.system('stty -echo')
+        while paddle.lives > 0:
+            ball = Ball(paddle)
+            # Game Loop
+            while True:
+                in_bound = ball.move(board, paddle)
+                if not in_bound:
+                    break
+
+                # Get input
+                ip = nbinput.get_parsed_input(0.07)
+                if ip == 'none':
+                    continue
+                elif ip == 'quit':
+                    os.system('clear')
+                    cursor.show()
+                    exit()
+                elif ip != 'space':
+                    paddle.move(ip, ball)
+                else:
+                    ball.launch()
+                board.update(paddle,ball)
+                utilities.print_frame(score, paddle.lives,board.content,ball)
+                
+            paddle.lives-=1
+            paddle.reset()
+        cursor.show()
+    finally:
+        os.system('stty echo')
+        cursor.show()
+    
         
 
 if __name__=="__main__":

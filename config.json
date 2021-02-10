@@ -3,9 +3,9 @@
     "width": 100,
     "header_heigth": 7,
     "header_text_position": 6,
-    "small_paddle_size": 10,
-    "large_paddle_size": 16,
-    "paddle_bottom_padding": 3,
-    "paddle_speed": 2,
+    "small_paddle_size": 11,
+    "large_paddle_size": 17,
+    "paddle_bottom_padding": 4,
+    "paddle_speed": 4,
     "max_lives": 3
 }

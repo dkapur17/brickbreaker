@@ -5,6 +5,7 @@ import sys
 import termios
 import tty
 import signal
+from time import sleep
 
 import header
 
@@ -49,18 +50,21 @@ class Input:
                 text = 'enter'
             else:
                 text = 'none'
+            if text != 'none':
+                sleep(timeout)
             return text
         except TimeoutError:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return None
 
-def print_frame(score, lives, board):
+def print_frame(score, lives, board, ball):
     os.system('clear')
     HEADER = header.create_header(score, lives)
     for row in HEADER:
         print(''.join(row).center(os.get_terminal_size().columns))
     for row in board:
         print(''.join(row).center(os.get_terminal_size().columns))
+    print(ball.x, ball.y)
 
 def fetch_configurations(file_name):
     with open(file_name) as f:
