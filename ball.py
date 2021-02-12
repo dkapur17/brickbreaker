@@ -1,10 +1,12 @@
 from random import choice
 from math import ceil,floor
 
+import utilities
+
 class Ball():
     paddle_offset_ref = [-5,-4,-3,-2,-1,0,1,2,3,4,5]
     def __init__(self, paddle):
-        self.content = '●'
+        self.content = 'o'
         self.paddle_offset = choice(self.paddle_offset_ref)
         self.x = paddle.x + paddle.curr_size//2 + self.paddle_offset
         self.y = paddle.y -1
@@ -22,7 +24,7 @@ class Ball():
     def move(self, board, paddle):
 
         if self.on_paddle:
-            return True
+            return [True, -1, -1]
 
         self.x += self.vel_x
         self.x = max(1, self.x)
@@ -36,7 +38,7 @@ class Ball():
             self.vel_x *= -1
 
         if self.y >= board.height-1:
-            return False
+            return [False, -1, -1]
         elif self.y <= 1:
             self.vel_y *= -1
         elif self.y == paddle.y - 1 and self.x in range(paddle.x - 1, paddle.x + paddle.curr_size):
@@ -44,10 +46,20 @@ class Ball():
             self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x),paddle.curr_size-1)]
             self.vel_x = ceil(self.paddle_offset/2) if self.paddle_offset > 0 else floor(self.paddle_offset/2)
         elif board.content[self.y][self.x] == '▀':
-            self.vel_y = -1
+            self.y -= 2
             self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x), paddle.curr_size-1)]
             self.vel_x = ceil(self.paddle_offset/2) if self.paddle_offset > 0 else floor(self.paddle_offset/2)
         
-        
-        return True
+        brick_x = -1
+        brick_y = -1
+        if  board.content[self.y + self.vel_y][self.x] in utilities.get_brick_chars():
+            brick_y = self.y +self.vel_y
+            brick_x = self.x
+            self.vel_y *= -1
+        elif board.content[self.y][max(0,min(self.x + (1 if self.vel_x > 0 else -1), board.width-1))] in utilities.get_brick_chars():
+            brick_x = max(0,min(self.x + (1 if self.vel_x > 0 else -1), board.width-1))
+            brick_y = self.y
+            self.vel_x *= -1
+
+        return [True, brick_x, brick_y]
         

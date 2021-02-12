@@ -2,6 +2,8 @@ import json
 import os
 import random
 
+from colorama import Fore
+
 class Board:
     def __init__(self, height, width):
         # Get board dimensions
@@ -29,7 +31,9 @@ class Board:
         self.content[self.height-1][0]='╚'
         self.content[self.height-1][self.width-1]='╝'
 
-    def update(self,paddle,ball):
+    def update(self,paddle,ball, bricks):
         self.clear()
         self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] =  paddle.content
+        for brick in bricks:
+            self.content[brick.y][brick.x: brick.x + brick.length] = brick.content
         self.content[ball.y][ball.x] = ball.content

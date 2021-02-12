@@ -5,10 +5,11 @@ from time import sleep
 import header
 import utilities
 import menu
-import gameover
+import endscreen
 from board import Board
 from paddle import Paddle
 from ball import Ball
+
 
 def main():
     # Get configurations
@@ -20,6 +21,7 @@ def main():
     PADDLE_BOTTOM_PADDING = config["paddle_bottom_padding"]
     PADDLE_SPEED = config["paddle_speed"]
     MAX_LIVES = config["max_lives"]
+    BRICK_LENGTH = config["brick_length"]
 
     # Show blocking menu
     menu.print_menu()
@@ -31,6 +33,7 @@ def main():
 
     paddle=Paddle(SMALL_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
     board=Board(HEIGHT,WIDTH)
+    bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH)
     score=0
 
     try:
@@ -39,10 +42,6 @@ def main():
             ball = Ball(paddle)
             # Game Loop
             while True:
-                in_bound = ball.move(board, paddle)
-                if not in_bound:
-                    break
-
                 # Get input
                 ip = nbinput.get_parsed_input(0.07)
                 if ip == 'quit':
@@ -53,13 +52,21 @@ def main():
                     paddle.move(ip, ball)
                 elif ip == 'space':
                         ball.launch()
-                board.update(paddle,ball)
-                utilities.print_frame(score, paddle.lives,board.content,ball)
-                
+
+                in_bound, brick_x, brick_y = ball.move(board, paddle)
+                if not in_bound:
+                    break
+                bricks = utilities.collide_with_brick(bricks, brick_x, brick_y)
+                board.update(paddle,ball,bricks)
+                utilities.print_frame(score, paddle.lives,board.content)
+                if not len(bricks):
+                    break
             paddle.lives-=1
             paddle.reset()
+            if not len(bricks):
+                break
         cursor.show()
-        gameover.print_game_over_screen(score)
+        endscreen.print_endscreen(score,bricks)
     finally:
         os.system('stty echo')
         cursor.show()
