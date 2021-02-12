@@ -5,6 +5,7 @@ from time import sleep
 import header
 import utilities
 import menu
+import gameover
 from board import Board
 from paddle import Paddle
 from ball import Ball
@@ -58,6 +59,7 @@ def main():
             paddle.lives-=1
             paddle.reset()
         cursor.show()
+        gameover.print_game_over_screen(score)
     finally:
         os.system('stty echo')
         cursor.show()
