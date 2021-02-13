@@ -58,19 +58,21 @@ class Input:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return None
 
-def print_frame(score, lives, board):
+def print_frame(score, lives, board, WIDTH):
     os.system('clear')
     HEADER = header.create_header(score, lives)
+    padding = (os.get_terminal_size().columns - WIDTH)//2
     for row in HEADER:
-        print(''.join(row))
+        print(' '*padding + ''.join(row))
     brick_colors = {'1': Fore.GREEN,'2': Fore.YELLOW,'3': Fore.RED,'U': Fore.WHITE, 'E': Fore.BLUE}
     for row in board:
+        s=''
         for ch in row:
             if ch in get_brick_chars():
-                print(brick_colors[ch] +  '█' + Fore.RESET,end='')
+                s+=brick_colors[ch] +  '█' + Fore.RESET
             else:
-                print(ch, end='')
-        print()
+                s+=ch
+        print(' '*padding + s)
 
 def fetch_configurations(file_name):
     with open(file_name) as f:
@@ -104,7 +106,19 @@ def init_bricks(brick_length, board_width):
 def get_brick_chars():
     return '123UE'
 
-def collide_with_brick(bricks, x, y):
-    if x != -1:
-        bricks = list(filter(lambda brick: x not in range(brick.x,brick.x+brick.length) or brick.y != y, bricks))
-    return bricks
+def collide_with_brick(bricks, x, y,score):
+    if x == -1:
+        return bricks,score
+    for brick in bricks:
+        if x in range(brick.x, brick.x+brick.length) and y == brick.y:
+            if brick.strength != -1:
+                bricks.remove(brick)
+                score += 1
+            if brick.strength == 2:
+                bricks.append(Brick1(brick.length, brick.x, brick.y))
+            elif brick.strength == 3:
+                bricks.append(Brick2(brick.length, brick.x, brick.y))
+
+            break
+    # bricks = list(filter(lambda brick: x not in range(brick.x,brick.x+brick.length) or brick.y != y, bricks))
+    return bricks,score

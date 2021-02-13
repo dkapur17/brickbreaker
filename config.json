@@ -6,7 +6,7 @@
     "small_paddle_size": 11,
     "large_paddle_size": 17,
     "paddle_bottom_padding": 4,
-    "paddle_speed": 4,
+    "paddle_speed": 3,
     "max_lives": 3,
     "brick_length": 5
 }

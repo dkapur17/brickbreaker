@@ -56,17 +56,17 @@ def main():
                 in_bound, brick_x, brick_y = ball.move(board, paddle)
                 if not in_bound:
                     break
-                bricks = utilities.collide_with_brick(bricks, brick_x, brick_y)
+                bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score)
                 board.update(paddle,ball,bricks)
-                utilities.print_frame(score, paddle.lives,board.content)
-                if not len(bricks):
+                utilities.print_frame(score, paddle.lives,board.content, WIDTH)
+                if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                     break
             paddle.lives-=1
             paddle.reset()
-            if not len(bricks):
+            if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                 break
         cursor.show()
-        endscreen.print_endscreen(score,bricks)
+        endscreen.print_endscreen(score,list(filter(lambda brick: brick.strength != -1, bricks)))
     finally:
         os.system('stty echo')
         cursor.show()
