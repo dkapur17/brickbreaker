@@ -62,9 +62,16 @@ def print_frame(score, lives, board):
     os.system('clear')
     HEADER = header.create_header(score, lives)
     for row in HEADER:
-        print(''.join(row).center(os.get_terminal_size().columns))
+        print(''.join(row))
+    brick_colors = {'░': Fore.GREEN,'▒': Fore.YELLOW,'▓': Fore.RED,'█': Fore.WHITE}
     for row in board:
-        print(''.join(row).center(os.get_terminal_size().columns))
+        # print(''.join(row).center(os.get_terminal_size().columns))
+        for ch in row:
+            if ch in get_brick_chars():
+                print(brick_colors[ch] + ch  + Fore.RESET,end='')
+            else:
+                print(ch, end='')
+        print()
 
 def fetch_configurations(file_name):
     with open(file_name) as f:
