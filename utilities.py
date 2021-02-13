@@ -9,7 +9,7 @@ from time import sleep
 from random import choice
 
 import header
-from brick import Brick1, Brick2, Brick3, BrickU
+from brick import Brick1, Brick2, Brick3, BrickU, BrickE
 
 class Cursor:
     def __init__(self):
@@ -63,12 +63,11 @@ def print_frame(score, lives, board):
     HEADER = header.create_header(score, lives)
     for row in HEADER:
         print(''.join(row))
-    brick_colors = {'░': Fore.GREEN,'▒': Fore.YELLOW,'▓': Fore.RED,'█': Fore.WHITE}
+    brick_colors = {'1': Fore.GREEN,'2': Fore.YELLOW,'3': Fore.RED,'U': Fore.WHITE, 'E': Fore.BLUE}
     for row in board:
-        # print(''.join(row).center(os.get_terminal_size().columns))
         for ch in row:
             if ch in get_brick_chars():
-                print(brick_colors[ch] + ch  + Fore.RESET,end='')
+                print(brick_colors[ch] +  '█' + Fore.RESET,end='')
             else:
                 print(ch, end='')
         print()
@@ -88,7 +87,7 @@ def init_bricks(brick_length, board_width):
         print("Could not locate brick_layout.txt")
         exit()
     i,j=0,0
-    brick_list = [BrickU ,Brick1, Brick2, Brick3]
+    brick_list = [BrickU ,Brick1, Brick2, Brick3, BrickE]
     try:
         for x in range(21, board_width-21, brick_length):
             for y in range(5,18):
@@ -99,11 +98,11 @@ def init_bricks(brick_length, board_width):
             i = 0
         return bricks
     except:
-        print("The brick layout file must be 13x13 in size and only have characyer '.','0','1','2' and '3'")
+        print("The brick layout file must be 13x13 in size and only have characyer '.','0','1','2', '3' and '4'")
         exit()
 
 def get_brick_chars():
-    return '░▒▓█'
+    return '123UE'
 
 def collide_with_brick(bricks, x, y):
     if x != -1:
