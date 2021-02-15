@@ -10,5 +10,6 @@
     "paddle_speed": 3,
     "max_lives": 3,
     "brick_length": 5,
-    "fast_ball_mutliplier": 1.5
+    "fast_ball_mutliplier": 1.5,
+    "powerup_duration": 7
 }

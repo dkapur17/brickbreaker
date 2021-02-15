@@ -1,6 +1,7 @@
 import json
 import os
 import random
+from math import floor
 
 from colorama import Fore
 
@@ -31,10 +32,12 @@ class Board:
         self.content[self.height-1][0]='╚'
         self.content[self.height-1][self.width-1]='╝'
 
-    def update(self,paddle,balls, bricks):
+    def update(self,paddle,balls, bricks, on_screen_powerups):
         self.clear()
-        self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] =  paddle.content
         for brick in bricks:
             self.content[brick.y][brick.x: brick.x + brick.length] = brick.content
+        for powerup in on_screen_powerups:
+            self.content[floor(powerup.y)][powerup.x] = powerup.content
         for ball in balls:
             self.content[ball.y][ball.x] = ball.content
+        self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] =  paddle.content

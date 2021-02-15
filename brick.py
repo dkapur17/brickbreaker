@@ -25,13 +25,13 @@ class Brick3(Brick):
 class BrickU(Brick):
     def __init__(self,length,x,y):
         super().__init__(-1,length,x,y)
-        self.content = ['U']*self.length
+        self.content = ['4']*self.length
     def detect_collision(self, ball):
         pass
 
 class BrickE(Brick):
     def __init__(self,length,x,y):
         super().__init__(-2,length,x,y)
-        self.content = ['E']*self.length
+        self.content = ['5']*self.length
     def detect_collision(self,ball):
         pass

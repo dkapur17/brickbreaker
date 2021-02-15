@@ -10,6 +10,7 @@ from random import choice
 
 import header
 from brick import Brick1, Brick2, Brick3, BrickU, BrickE
+from powerups import ExpandPaddle
 
 class Cursor:
     def __init__(self):
@@ -64,7 +65,7 @@ def print_frame(score, lives, time_elapsed, board, WIDTH):
     padding = (os.get_terminal_size().columns - WIDTH)//2
     for row in HEADER:
         print(' '*padding + ''.join(row))
-    brick_colors = {'1': Fore.GREEN,'2': Fore.YELLOW,'3': Fore.RED,'U': Fore.WHITE, 'E': Fore.BLUE}
+    brick_colors = {'1': Fore.GREEN,'2': Fore.YELLOW,'3': Fore.RED,'4': Fore.WHITE, '5': Fore.BLUE}
     for row in board:
         s=''
         for ch in row:
@@ -104,9 +105,9 @@ def init_bricks(brick_length, board_width):
         exit()
 
 def get_brick_chars():
-    return '123UE'
+    return '12345'
 
-def collide_with_brick(bricks, x_list, y_list,score):
+def collide_with_brick(bricks, x_list, y_list,score,on_screen_powerups,paddle, POWERUP_DURATION):
 
     for (x,y) in zip(x_list,y_list):
         if x == -1:
@@ -116,6 +117,8 @@ def collide_with_brick(bricks, x_list, y_list,score):
                 if brick.strength != -1:
                     bricks.remove(brick)
                     score += 1
+                if brick.strength == 1:
+                    on_screen_powerups.append(ExpandPaddle(x,y, POWERUP_DURATION))
                 if brick.strength == 2:
                     bricks.append(Brick1(brick.length, brick.x, brick.y))
                 elif brick.strength == 3:

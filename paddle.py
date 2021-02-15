@@ -32,5 +32,18 @@ class Paddle():
     
     def reset(self):
         self.curr_size = self.norm_size
+        self.content = ['▀']*self.curr_size
         self.x = (self.board_width//2) - (self.curr_size//2)
         self.y = self.board_height - self.bottom_padding
+
+    def grow(self):
+        self.curr_size = self.max_size
+        self.content = ['▀']*self.curr_size
+
+    def shrink(self):
+        self.curr_size = self.min_size
+        self.content = ['▀']*self.curr_size
+    
+    def reset_size(self):
+        self.curr_size = self.norm_size
+        self.content = ['▀']*self.curr_size

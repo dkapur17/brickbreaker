@@ -39,6 +39,8 @@ class Ball():
         self.y = max(1,self.y)
         self.y = min(self.y, board.height-1)
 
+        self.paddle_offset_ref = list(range(-paddle.curr_size//2+1, paddle.curr_size//2 + 1))
+
         if self.x in [1, board.width-2]:
             self.vel_x *= -1
 

@@ -24,6 +24,7 @@ def main():
     MAX_LIVES = config["max_lives"]
     BRICK_LENGTH = config["brick_length"]
     FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
+    POWERUP_DURATION = config["powerup_duration"]
 
     # Show blocking menu
     menu.print_menu()
@@ -37,6 +38,8 @@ def main():
     board=Board(HEIGHT,WIDTH)
     bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH)
     balls = []
+    on_screen_powerups = []
+    active_powerups = []
     score = 0
     start_time = time()
 
@@ -71,13 +74,30 @@ def main():
                 if not len(balls):
                     break
 
-                bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score)
-                board.update(paddle,balls,bricks)
+                bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle, POWERUP_DURATION)
+                for powerup in on_screen_powerups:
+                    powerup.move(HEIGHT)
+                    if powerup.collected(paddle):
+                        powerup.activate(paddle,ball)
+                        active_powerups.append(powerup)
+                        powerup.inbound = False
+
+                for powerup in active_powerups:
+                    if powerup.check_completion():
+                        powerup.deactivate(paddle,ball)
+            
+                on_screen_powerups = list(filter(lambda powerup: powerup.inbound, on_screen_powerups))
+                active_powerups = list(filter(lambda powerup: not powerup.expired, active_powerups))
+
+                board.update(paddle,balls,bricks,on_screen_powerups)
+
                 utilities.print_frame(score, paddle.lives, time() - start_time,board.content, WIDTH)
+
                 if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                     break
             paddle.lives-=1
             paddle.reset()
+            on_screen_powerups = []
             if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                 break
         cursor.show()
