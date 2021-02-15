@@ -58,9 +58,9 @@ class Input:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return None
 
-def print_frame(score, lives, board, WIDTH):
+def print_frame(score, lives, time_elapsed, board, WIDTH):
     os.system('clear')
-    HEADER = header.create_header(score, lives)
+    HEADER = header.create_header(score, lives, time_elapsed)
     padding = (os.get_terminal_size().columns - WIDTH)//2
     for row in HEADER:
         print(' '*padding + ''.join(row))

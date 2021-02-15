@@ -1,6 +1,6 @@
 import json
 import os
-from time import sleep
+from time import sleep,time
 
 import header
 import utilities
@@ -37,7 +37,8 @@ def main():
     board=Board(HEIGHT,WIDTH)
     bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH)
     balls = []
-    score=0
+    score = 0
+    start_time = time()
 
     try:
         os.system('stty -echo')
@@ -72,7 +73,7 @@ def main():
 
                 bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score)
                 board.update(paddle,balls,bricks)
-                utilities.print_frame(score, paddle.lives,board.content, WIDTH)
+                utilities.print_frame(score, paddle.lives, time() - start_time,board.content, WIDTH)
                 if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                     break
             paddle.lives-=1
