@@ -42,9 +42,9 @@ class Input:
             signal.alarm(0)
             if ip == b'\x03':
                 text = 'quit'
-            elif ip == b'\x1b[D' or ip == b'a':
+            elif ip in [b'\x1b[D', b'a', b'A']:
                 text = 'left'
-            elif ip == b'\x1b[C' or ip == b'd':
+            elif ip in [b'\x1b[C', b'd', b'D']:
                 text = 'right'
             elif ip == b' ':
                 text = 'space'
@@ -120,5 +120,4 @@ def collide_with_brick(bricks, x, y,score):
                 bricks.append(Brick2(brick.length, brick.x, brick.y))
 
             break
-    # bricks = list(filter(lambda brick: x not in range(brick.x,brick.x+brick.length) or brick.y != y, bricks))
     return bricks,score
