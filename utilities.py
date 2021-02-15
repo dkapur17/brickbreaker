@@ -106,18 +106,20 @@ def init_bricks(brick_length, board_width):
 def get_brick_chars():
     return '123UE'
 
-def collide_with_brick(bricks, x, y,score):
-    if x == -1:
-        return bricks,score
-    for brick in bricks:
-        if x in range(brick.x, brick.x+brick.length) and y == brick.y:
-            if brick.strength != -1:
-                bricks.remove(brick)
-                score += 1
-            if brick.strength == 2:
-                bricks.append(Brick1(brick.length, brick.x, brick.y))
-            elif brick.strength == 3:
-                bricks.append(Brick2(brick.length, brick.x, brick.y))
+def collide_with_brick(bricks, x_list, y_list,score):
 
-            break
+    for (x,y) in zip(x_list,y_list):
+        if x == -1:
+            return bricks,score
+        for brick in bricks:
+            if x in range(brick.x, brick.x+brick.length) and y == brick.y:
+                if brick.strength != -1:
+                    bricks.remove(brick)
+                    score += 1
+                if brick.strength == 2:
+                    bricks.append(Brick1(brick.length, brick.x, brick.y))
+                elif brick.strength == 3:
+                    bricks.append(Brick2(brick.length, brick.x, brick.y))
+                break
+
     return bricks,score

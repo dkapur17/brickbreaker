@@ -4,15 +4,20 @@ from math import ceil,floor
 import utilities
 
 class Ball():
-    paddle_offset_ref = [-5,-4,-3,-2,-1,0,1,2,3,4,5]
-    def __init__(self, paddle):
+    def __init__(self, paddle, max_multiplier, curr_multiplier = 1, x=None, y=None, vel_x=0, vel_y=0, on_paddle=True, sticky=False, thru=False):
         self.content = 'o'
+        self.paddle_offset_ref = list(range(-paddle.curr_size//2+1, paddle.curr_size//2 + 1))
         self.paddle_offset = choice(self.paddle_offset_ref)
-        self.x = paddle.x + paddle.curr_size//2 + self.paddle_offset
-        self.y = paddle.y -1
-        self.vel_x = 0
-        self.vel_y = 0
-        self.on_paddle = True
+        self.x = paddle.x + paddle.curr_size//2 + self.paddle_offset if x == None else x
+        self.y = paddle.y -1 if y == None else y
+        self.vel_x = vel_x
+        self.vel_y = vel_y
+        self.on_paddle = on_paddle
+        self.inbound = True
+        self.curr_multiplier = curr_multiplier
+        self.max_multiplier = max_multiplier
+        self.thru = thru
+        self.sticky = sticky
 
     def launch(self):
         if not self.on_paddle:
@@ -26,7 +31,7 @@ class Ball():
         if self.on_paddle:
             return [True, -1, -1]
 
-        self.x += self.vel_x
+        self.x += floor(self.vel_x*self.curr_multiplier)
         self.x = max(1, self.x)
         self.x = min(self.x, board.width-2)
 
@@ -42,9 +47,15 @@ class Ball():
         elif self.y <= 1:
             self.vel_y *= -1
         elif ((self.y + self.vel_y) == paddle.y) and ((self.x+self.vel_x) in range(paddle.x - 1, paddle.x + paddle.curr_size)):
-            self.vel_y = -1
-            self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x),paddle.curr_size-1)]
-            self.vel_x = floor(self.paddle_offset/3) if self.paddle_offset > 0 else ceil(self.paddle_offset/3)
+            if self.sticky:
+                self.vel_x = 0
+                self.vel_y = 0
+                self.on_paddle = True
+                self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x),paddle.curr_size-1)]
+            else:
+                self.vel_y = -1
+                self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x),paddle.curr_size-1)]
+                self.vel_x = floor(self.paddle_offset/3) if self.paddle_offset > 0 else ceil(self.paddle_offset/3)
         
         brick_x = -1
         brick_y = -1

@@ -3,10 +3,12 @@
     "width": 103,
     "header_heigth": 7,
     "header_text_position": 6,
-    "small_paddle_size": 11,
-    "large_paddle_size": 17,
+    "small_paddle_size": 9,
+    "medium_paddle_size": 11,
+    "large_paddle_size": 13,
     "paddle_bottom_padding": 4,
     "paddle_speed": 3,
     "max_lives": 3,
-    "brick_length": 5
+    "brick_length": 5,
+    "fast_ball_mutliplier": 1.5
 }

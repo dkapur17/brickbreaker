@@ -17,11 +17,13 @@ def main():
     HEIGHT = config["height"]
     WIDTH = config["width"]
     SMALL_PADDLE_SIZE = config["small_paddle_size"]
+    MEDIUM_PADDLE_SIZE = config["medium_paddle_size"]
     LARGE_PADDLE_SIZE = config["large_paddle_size"]
     PADDLE_BOTTOM_PADDING = config["paddle_bottom_padding"]
     PADDLE_SPEED = config["paddle_speed"]
     MAX_LIVES = config["max_lives"]
     BRICK_LENGTH = config["brick_length"]
+    FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
 
     # Show blocking menu
     menu.print_menu()
@@ -31,15 +33,16 @@ def main():
     nbinput = utilities.Input()
     cursor.hide()
 
-    paddle=Paddle(SMALL_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
+    paddle=Paddle(SMALL_PADDLE_SIZE, MEDIUM_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
     board=Board(HEIGHT,WIDTH)
     bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH)
+    balls = []
     score=0
 
     try:
         os.system('stty -echo')
         while paddle.lives > 0:
-            ball = Ball(paddle)
+            balls.append(Ball(paddle,max_multiplier=FAST_BALL_MULTIPLIER))
             # Game Loop
             while True:
                 # Get input
@@ -49,15 +52,26 @@ def main():
                     cursor.show()
                     exit()
                 if ip in ['left', 'right']:
-                    paddle.move(ip, ball)
+                    paddle.move(ip, balls)
                 elif ip == 'space':
-                        ball.launch()
+                        for ball in balls:
+                            ball.launch()
+                
+                brick_x,brick_y=[],[]
+                for ball in balls:
+                    a,b,c = ball.move(board, paddle)
+                    ball.inbound = a
+                    brick_x.append(b)
+                    brick_y.append(c)
 
-                in_bound, brick_x, brick_y = ball.move(board, paddle)
-                if not in_bound:
+                balls = list(filter(lambda ball: ball.inbound, balls))
+                if len(balls) == 1:
+                    paddle.multiball = False
+                if not len(balls):
                     break
+
                 bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score)
-                board.update(paddle,ball,bricks)
+                board.update(paddle,balls,bricks)
                 utilities.print_frame(score, paddle.lives,board.content, WIDTH)
                 if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                     break
