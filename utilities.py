@@ -6,6 +6,7 @@ import termios
 import tty
 import signal
 from time import sleep
+from re import sub
 
 import header
 from brick import Brick1, Brick2, Brick3, BrickU, BrickE
@@ -58,7 +59,7 @@ class Input:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return None
 
-def print_frame(score, lives, time_elapsed, board, WIDTH):
+def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values):
     os.system('clear')
     HEADER = header.create_header(score, lives, time_elapsed)
     padding = (os.get_terminal_size().columns - WIDTH)//2
@@ -73,6 +74,11 @@ def print_frame(score, lives, time_elapsed, board, WIDTH):
             else:
                 s+=ch
         print(' '*padding + s)
+    powerup_string = [(sub(r'([A-Z])', r' \g<1>', k).title() + ": " + str(v)) for k,v in zip(powerup_values.keys(),powerup_values.values())]
+    l1 = '\t'.join(powerup_string[:3])
+    l2 = '\t'.join(powerup_string[3:])
+    print(l1.center(os.get_terminal_size().columns))
+    print(l2.center(os.get_terminal_size().columns))
 
 def fetch_configurations(file_name):
     with open(file_name) as f:
@@ -92,7 +98,7 @@ def init_bricks(brick_length, board_width):
     brick_list = {"1": Brick1, "2": Brick2, "3": Brick3, "4": BrickU, "5": BrickE}
     try:
         for x in range(21, board_width-21, brick_length):
-            for y in range(5,18):
+            for y in range(4,17):
                 if data[i][j] != '.':
                     bricks.append(brick_list[data[i][j]](brick_length, x, y))
                 i+=1

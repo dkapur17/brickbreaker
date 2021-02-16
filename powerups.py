@@ -24,10 +24,13 @@ class PowerUp:
         return time() - self.init_time >= self.duration
 
     def collected(self, paddle):
-        return self.y == paddle.y and self.x in range(paddle.x, paddle.x + paddle.curr_size)
+        return self.y == paddle.y and self.x in range(paddle.x, paddle.x + paddle.curr_size+1)
     
     def deactivate(self):
         self.expired = True
+
+    def get_time_left(self):
+        return f"{self.duration - (time() - self.init_time):.2f}"
 
 
 class ExpandPaddle(PowerUp):

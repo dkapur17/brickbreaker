@@ -13,9 +13,7 @@ class Paddle():
         self.y = self.board_height - self.bottom_padding
         self.speed = speed
         self.lives = max_lives
-
-        self.multiball = False
-
+        
     def move(self,direction, balls):
         if direction == 'left':
             movement = -1
