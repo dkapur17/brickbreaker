@@ -40,31 +40,28 @@ def main():
     board=Board(HEIGHT,WIDTH)
     bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH)
     # Game Variables
-    balls = []
-    on_screen_powerups = []
-    active_powerups = []
     score = 0
     init_times = [-1]*MAX_LIVES
     time_segments = [0]*MAX_LIVES
-
-    powerup_values = {
-        "expandPaddle": 0,
-        "shrinkPaddle": 0,
-        "fastBall": 0,
-        "paddleGrab": 0,
-        "multiBall": 1,
-        "thruBall": 0
-    }
 
     try:
         # Make stdin non-echo
         os.system('stty -echo')
 
         while paddle.lives > 0:
-            # At the start of the round, add a ball to the balls array
+            # Round variables
             balls = []
             balls.append(Ball(paddle,max_multiplier=FAST_BALL_MULTIPLIER))
-
+            powerup_values = {
+                "expandPaddle": 0,
+                "shrinkPaddle": 0,
+                "fastBall": 0,
+                "paddleGrab": 0,
+                "multiBall": 1,
+                "thruBall": 0
+            }
+            on_screen_powerups = []
+            active_powerups = []
             # Round Loop
             while True:
                 # Update time
@@ -147,19 +144,7 @@ def main():
             paddle.lives-=1
             # Reset the paddle position and size
             paddle.reset()
-            # Remove all powerups from the screen
-            on_screen_powerups = []
-            # Remove all active powerups
-            active_powerups = []
-            # Reset powerup values
-            powerup_values = {
-                "expandPaddle": 0,
-                "shrinkPaddle": 0,
-                "fastBall": 0,
-                "paddleGrab": 0,
-                "multiBall": 1,
-                "thruBall": 0
-            }
+            
             # If there are no more breakable bricks in the game, break from game loop
             if not len(list(filter(lambda brick: brick.strength != -1, bricks))):
                 break

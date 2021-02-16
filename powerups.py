@@ -30,7 +30,7 @@ class PowerUp:
         self.expired = True
 
     def get_time_left(self):
-        return f"{self.duration - (time() - self.init_time):.2f}"
+        return f"{self.duration - (time() - self.init_time):.2f}s"
 
 
 class ExpandPaddle(PowerUp):
@@ -122,3 +122,6 @@ class ThruBall(PowerUp):
         super().deactivate()
         for ball in balls:
             ball.thru = False
+
+    def get_time_left(self):
+        pass

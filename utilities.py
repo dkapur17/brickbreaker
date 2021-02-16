@@ -74,11 +74,9 @@ def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values):
             else:
                 s+=ch
         print(' '*padding + s)
-    powerup_string = [(sub(r'([A-Z])', r' \g<1>', k).title() + ": " + str(v)) for k,v in zip(powerup_values.keys(),powerup_values.values())]
-    l1 = '\t'.join(powerup_string[:3])
-    l2 = '\t'.join(powerup_string[3:])
-    print(l1.center(os.get_terminal_size().columns))
-    print(l2.center(os.get_terminal_size().columns))
+    active_powerup_values = [(sub(r'([A-Z])', r' \g<1>', k).title() + ": " + str(v)) for k,v in zip(powerup_values.keys(),powerup_values.values()) if v != 0]
+    print("Active Powerups".center(os.get_terminal_size().columns))
+    print((' '.join(active_powerup_values)).center(os.get_terminal_size().columns))
 
 def fetch_configurations(file_name):
     with open(file_name) as f:
