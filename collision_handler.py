@@ -9,8 +9,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru):
         return bricks,score
     for brick in bricks:
         if x in range(brick.x, brick.x+brick.length) and y == brick.y:
-            # powerups = [ExpandPaddle(x,y),ShrinkPaddle(x,y), FastBall(x,y), PaddleGrab(x,y), MultiBall(x,y), ThruBall(x,y)]
-            powerups = [ExpandPaddle(x,y)]
+            powerups = [ExpandPaddle(x,y),ShrinkPaddle(x,y), FastBall(x,y), PaddleGrab(x,y), MultiBall(x,y), ThruBall(x,y)]
             if thru:
                 bricks.remove(brick)
                 if int(brick.content[0]) < 5:
@@ -21,7 +20,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru):
                 if brick.strength != -1:
                     bricks.remove(brick)
                     score += 1
-                if brick.strength == 1 and uniform(0,1) <= 0.9:
+                if brick.strength == 1 and uniform(0,1) <= 0.5:
                     on_screen_powerups.append(choice(powerups))
                 if brick.strength == 2:
                     bricks.append(Brick1(brick.length, brick.x, brick.y))
