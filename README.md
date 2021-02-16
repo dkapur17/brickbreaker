@@ -1,6 +1,6 @@
 # DASS Assignment 2 - Brick Breaker
 
-This is a terminal based brick breaker game. Zero GUI. The game physics makes use of a 2D grid that represents the board, with each element of the board being a single character. In each iteration of the game loop, the board is updated based on user input and other factors within the game and the new board is printed on the screen.
+This is a terminal based brick breaker game. Zero GUI. The game physics makes use of a 2D grid that represents the board, with each element of the board being a single character. In each iteration of the game loop, the board is updated based on user input and other factors within the game and the new board is printed to the screen.
 
 The only non-core python library used was `colorama` to add color to the text.
 
@@ -42,7 +42,7 @@ to launch the game.
 
 9. Each time the ball hits a brick and does damage to it, the score is increased by `1`. But in while the **"Thru-ball"** powerup is active, every brick that is destoryed adds an amount equal to its strength to the score. Breaking an *unbreakable* brick while in **"Thru-ball"** mode will add `4` points to the score.
 
-10. The a round is over when the all the balls have gone out of bounds, i.e., they have hit the bottom edge of the board. In this case, the player loses a life.
+10. A round is over when the all the balls have gone out of bounds, i.e., they have hit the bottom edge of the board. In this case, the player loses a life.
 
 11. The game is over either when the player loses all his lives or all breakable bricks in the game have been destroyed.
 
