@@ -6,11 +6,11 @@ import termios
 import tty
 import signal
 from time import sleep
-from random import choice
+from random import choice,uniform
 
 import header
 from brick import Brick1, Brick2, Brick3, BrickU, BrickE
-from powerups import ExpandPaddle
+from powerups import ExpandPaddle, ShrinkPaddle, FastBall, PaddleGrab, MultiBall, ThruBall
 
 class Cursor:
     def __init__(self):
@@ -107,18 +107,25 @@ def init_bricks(brick_length, board_width):
 def get_brick_chars():
     return '12345'
 
-def collide_with_brick(bricks, x_list, y_list,score,on_screen_powerups,paddle, POWERUP_DURATION):
+def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, POWERUP_DURATION, thru):
 
-    for (x,y) in zip(x_list,y_list):
-        if x == -1:
-            return bricks,score
-        for brick in bricks:
-            if x in range(brick.x, brick.x+brick.length) and y == brick.y:
+    if x == -1:
+        return bricks,score
+    for brick in bricks:
+        if x in range(brick.x, brick.x+brick.length) and y == brick.y:
+            powerups = [ExpandPaddle(x,y, POWERUP_DURATION),ShrinkPaddle(x,y,POWERUP_DURATION), FastBall(x,y,POWERUP_DURATION), PaddleGrab(x,y,POWERUP_DURATION), MultiBall(x,y), ThruBall(x,y,POWERUP_DURATION)]
+            if thru:
+                bricks.remove(brick)
+                if int(brick.content[0]) < 5:
+                    score += int(brick.content[0])
+                if uniform(0,1) <= 0.5:
+                    on_screen_powerups.append(choice(powerups))
+            else:
                 if brick.strength != -1:
                     bricks.remove(brick)
                     score += 1
-                if brick.strength == 1:
-                    on_screen_powerups.append(ExpandPaddle(x,y, POWERUP_DURATION))
+                if brick.strength == 1 and uniform(0,1) <= 0.5:
+                    on_screen_powerups.append(choice(powerups))
                 if brick.strength == 2:
                     bricks.append(Brick1(brick.length, brick.x, brick.y))
                 elif brick.strength == 3:

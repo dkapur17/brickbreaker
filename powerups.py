@@ -30,12 +30,89 @@ class PowerUp:
 class ExpandPaddle(PowerUp):
     def __init__(self,x,y,duration):
         super().__init__(x,y,duration)
+        self.name = "expandPaddle"
         self.content = 'E'
 
-    def activate(self,paddle,ball):
+    def activate(self,paddle,balls):
         super().activate()
         paddle.grow()
     
-    def deactivate(self, paddle,ball):
+    def deactivate(self, paddle,balls):
         super().deactivate()
         paddle.reset_size()
+
+class ShrinkPaddle(PowerUp):
+    def __init__(self,x,y,duration):
+        super().__init__(x,y,duration)
+        self.name = "shrinkPaddle"
+        self.content = 'S'
+    
+    def activate(self,paddle,balls):
+        super().activate()
+        paddle.shrink()
+
+    def deactivate(self,paddle,balls):
+        super().deactivate()
+        paddle.reset_size()
+
+class FastBall(PowerUp):
+    def __init__(self,x,y,duration):
+        super().__init__(x,y,duration)
+        self.name = "fastBall"
+        self.content = 'F'
+
+    def activate(self,paddle,balls):
+        super().activate()
+        for ball in balls:
+            ball.curr_multiplier = ball.max_multiplier
+    
+    def deactivate(self,paddle,balls):
+        super().deactivate()
+        for ball in balls:
+            ball.curr_multiplier = 1
+
+class PaddleGrab(PowerUp):
+    def __init__(self,x,y,duration):
+        super().__init__(x,y,duration)
+        self.name = "paddleGrab"
+        self.content = 'G'
+    
+    def activate(self,paddle,balls):
+        super().activate()
+        for ball in balls:
+            ball.sticky = True
+    
+    def deactivate(self,paddle,balls):
+        super().deactivate()
+        for ball in balls:
+            ball.sticky = False
+
+class MultiBall(PowerUp):
+    def __init__(self,x,y):
+        self.x,self.y = x,y
+        self.name = "multiBall"
+        self.inbound = True
+        self.content = 'M'
+    
+    def activate(self,paddle,balls):
+        new_balls_list = []
+        for ball in balls:
+            new_balls_list.append(ball.make_twin())
+        self.expired = True
+        return balls+new_balls_list
+
+class ThruBall(PowerUp):
+    def __init__(self,x,y,duration):
+        super().__init__(x,y,duration)
+        self.name = "thruBall"
+        self.content = 'T'
+
+    def activate(self,paddle,balls):
+        super().activate()
+        for ball in balls:
+            ball.thru = True
+    
+    def deactivate(self, paddle, balls):
+        super().deactivate()
+        for ball in balls:
+            ball.thru = False

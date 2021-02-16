@@ -46,6 +46,7 @@ def main():
     try:
         os.system('stty -echo')
         while paddle.lives > 0:
+            balls = []
             balls.append(Ball(paddle,max_multiplier=FAST_BALL_MULTIPLIER))
             # Game Loop
             while True:
@@ -58,15 +59,15 @@ def main():
                 if ip in ['left', 'right']:
                     paddle.move(ip, balls)
                 elif ip == 'space':
-                        for ball in balls:
-                            ball.launch()
-                
-                brick_x,brick_y=[],[]
+                    for ball in balls:
+                        ball.launch()
+
+                board.update(paddle,balls,bricks,on_screen_powerups)
+
                 for ball in balls:
-                    a,b,c = ball.move(board, paddle)
-                    ball.inbound = a
-                    brick_x.append(b)
-                    brick_y.append(c)
+                    ball.inbound,brick_x,brick_y = ball.move(board, paddle)
+                    bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle,POWERUP_DURATION, ball.thru)
+                    board.update(paddle,balls,bricks,on_screen_powerups)
 
                 balls = list(filter(lambda ball: ball.inbound, balls))
                 if len(balls) == 1:
@@ -74,17 +75,22 @@ def main():
                 if not len(balls):
                     break
 
-                bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle, POWERUP_DURATION)
                 for powerup in on_screen_powerups:
                     powerup.move(HEIGHT)
                     if powerup.collected(paddle):
-                        powerup.activate(paddle,ball)
-                        active_powerups.append(powerup)
+                        powerup.activate(paddle,balls)
+                        if powerup.name == "multiBall":
+                            balls = powerup.activate(paddle, balls)
+                        elif powerup.name in ["expandPaddle", "shrinkPaddle"]:
+                            active_powerups = list(filter(lambda p: p.name not in ['expandPaddle', 'shrinkPaddle'], active_powerups))
+                        else:
+                            active_powerups = list(filter(lambda p: p.name != powerup.name, active_powerups))
+                        if powerup.name != "multiBall":
+                            active_powerups.append(powerup)
                         powerup.inbound = False
-
                 for powerup in active_powerups:
                     if powerup.check_completion():
-                        powerup.deactivate(paddle,ball)
+                        powerup.deactivate(paddle,balls)
             
                 on_screen_powerups = list(filter(lambda powerup: powerup.inbound, on_screen_powerups))
                 active_powerups = list(filter(lambda powerup: not powerup.expired, active_powerups))
