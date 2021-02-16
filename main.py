@@ -4,6 +4,7 @@ from time import sleep,time
 
 import header
 import utilities
+import collision_handler
 import menu
 import endscreen
 from board import Board
@@ -24,7 +25,6 @@ def main():
     MAX_LIVES = config["max_lives"]
     BRICK_LENGTH = config["brick_length"]
     FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
-    POWERUP_DURATION = config["powerup_duration"]
 
     # Show blocking menu
     menu.print_menu()
@@ -66,7 +66,7 @@ def main():
 
                 for ball in balls:
                     ball.inbound,brick_x,brick_y = ball.move(board, paddle)
-                    bricks,score = utilities.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle,POWERUP_DURATION, ball.thru)
+                    bricks,score = collision_handler.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle, ball.thru)
                     board.update(paddle,balls,bricks,on_screen_powerups)
 
                 balls = list(filter(lambda ball: ball.inbound, balls))

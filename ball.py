@@ -66,7 +66,7 @@ class Ball():
                 self.paddle_offset = self.paddle_offset_ref[min(max(0,self.x - paddle.x),paddle.curr_size-1)]
                 self.vel_x = ceil(self.paddle_offset/3) if self.paddle_offset > 0 else floor(self.paddle_offset/3)
         elif self.y == paddle.y and self.x in range(paddle.x, paddle.x+paddle.curr_size+1):
-            self.y -= 1
+            self.y -= 2
             if self.sticky:
                 self.vel_x = 0
                 self.vel_y = 0
