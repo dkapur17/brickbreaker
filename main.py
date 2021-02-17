@@ -25,6 +25,7 @@ def main():
     MAX_LIVES = config["max_lives"]
     BRICK_LENGTH = config["brick_length"]
     FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
+    POWERUP_PROB = config["powerup_prob"]
 
     # Show blocking menu
     menu.print_menu()
@@ -88,7 +89,7 @@ def main():
                 # Handle movement and collision for each ball
                 for ball in balls:
                     ball.inbound,brick_x,brick_y = ball.move(board, paddle)
-                    bricks,score = collision_handler.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle, ball.thru)
+                    bricks,score = collision_handler.collide_with_brick(bricks, brick_x, brick_y,score,on_screen_powerups,paddle, ball.thru, POWERUP_PROB)
                     # After each ball collision, update board contents
                     board.update(paddle,balls,bricks,on_screen_powerups)
 
@@ -110,6 +111,8 @@ def main():
                         if powerup.name == "multiBall":
                             balls = powerup.activate(paddle, balls)
                         elif powerup.name in ["expandPaddle", "shrinkPaddle"]:
+                            powerup_values["expandPaddle"] = 0
+                            powerup_values["shrinkPaddle"] = 0
                             active_powerups = list(filter(lambda p: p.name not in ['expandPaddle', 'shrinkPaddle'], active_powerups))
                         else:
                             active_powerups = list(filter(lambda p: p.name != powerup.name, active_powerups))

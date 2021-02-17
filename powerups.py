@@ -30,6 +30,7 @@ class PowerUp:
         self.expired = True
 
     def get_time_left(self):
+        print("Hello")
         return f"{self.duration - (time() - self.init_time):.2f}s"
 
 
@@ -106,6 +107,9 @@ class MultiBall(PowerUp):
             new_balls_list.append(ball.make_twin())
         self.expired = True
         return balls+new_balls_list
+    
+    def get_time_left(self):
+        pass
 
 class ThruBall(PowerUp):
     def __init__(self,x,y):
@@ -122,6 +126,3 @@ class ThruBall(PowerUp):
         super().deactivate()
         for ball in balls:
             ball.thru = False
-
-    def get_time_left(self):
-        pass

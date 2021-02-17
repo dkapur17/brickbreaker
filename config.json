@@ -8,8 +8,9 @@
     "large_paddle_size": 15,
     "paddle_bottom_padding": 4,
     "paddle_speed": 4,
-    "max_lives": 4,
+    "max_lives": 3,
     "brick_length": 5,
     "fast_ball_mutliplier": 1.5,
-    "powerup_duration": 15
+    "powerup_duration": 15,
+    "powerup_prob": 0.5
 }
