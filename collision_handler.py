@@ -36,7 +36,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                 destroyed_bricks = [b for b in bricks if b not in post_explosion_bricks]
                 explosion_scores = [b.strength for b in destroyed_bricks]
                 explosion_scores = [1 if s == -2 else s for s in explosion_scores]
-                explosion_scores = [4 if s == -1 else s for s in explosion_scores]
+                explosion_scores = [5 if s == -1 else s for s in explosion_scores]
                 score += sum(explosion_scores)
                 bricks = [b for b in post_explosion_bricks]
                 for b in destroyed_bricks:
@@ -50,7 +50,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                     if brick.strength in [1,2,3]:
                         score += brick.strength
                     elif brick.strength == -1:
-                        score += 4
+                        score += 5
                     elif brick.strength == -2:
                         score += 1
                     if uniform(0,1) <= powerup_prob:
