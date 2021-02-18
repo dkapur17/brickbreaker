@@ -13,7 +13,7 @@ class PowerUp:
     
     def move(self, HEIGHT):
         self.y += 0.5
-        if self.y >= HEIGHT:
+        if self.y >= HEIGHT-1:
             self.inbound = False
     
     def activate(self):

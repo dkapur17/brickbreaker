@@ -16,21 +16,37 @@ python3 main.py
 ```
 to launch the game.
 
+## How to play
+
+Use `a` and `d` or the left and right arrow keys to move the paddle. Use `space` to launch the ball. Your target is to destroy all the colored bricks on the screen. To do damage to a brick, hit it with the ball.
+
+There are 5 types of bricks in the game. Green bricks take 1 hit to destroy, Yellow ones take 2 and Red ones take 3. White bricks are unbreakable under normal circumstances. Blue bricks are called exploding bricks. Upon hitting one of them, it not just destroys the brick, but all its neighboring bricks as well. If one of its neighboring bricks is also an exploding brick, it triggers a chain reaction.
+
+If the ball hits the bottom edge of the screen, you lose a life. You lose if you lose all your lives before destroying all colored bricks.
+
+On destroying a brick, a random powerup may appear in the bricks position and start moving downwards. Collect it with your paddle to gain the powerup. The powerups are:
+
+* `E`: "Expand Paddle" make the paddle larger
+* `S`: "Shrink Paddle" makes the paddle smaller
+* `M`: "Ball Multiplier" (a.k.a Multi-ball) makes a copy of each ball currently in play
+* `F`: "Fast Ball" increases the speed of each ball in play 1.5 times
+* `T`: "Thru Ball" ball goes through any bricks it touches, including unbreakable ones
+* `G`: "Paddle Grab" every time the ball hits the paddle, you can launch it at will.
+
+Each powerup lasts for 15 seconds (except for Ball Multiplier, which has no time duration).
+
+Every time you do damage to a brick, your score increases by 1. If you directly destroy a brick (using Thru-ball or an exploding brick), you get a score equivalent to its strength (the strength of an exploding brick itself is 1). If you manage to destroy an unbreakable brick (using Thru-ball or an exploding brick), your score increases by 4 points.
+
+
 ## Specifications
 
 1. The game is highly customizable as all configuration variables of the game have been stored together in a `config.json` file. When the game is launched,  the file is read and configuration variables are set in the game using a helper function.
 
-2. The brick layout is highly customizable. Specify the brick layout in a 13x13 matrix in `brick_layout.txt`. The allowed characters are `.` representing an empty space, `1`,`2` and `3` representing bricks of respective strengths and `4`, representing an unbreakable brick. Brick colors in increasing order of strength are Green, Yellow and Red. White bricks are unbreakable.
+2. The brick layout is highly customizable. Specify the brick layout in a 13x13 matrix in `brick_layout.txt`. The allowed characters are `.` representing an empty space, `1`,`2` and `3` representing bricks of respective strengths, `4` representing an unbreakable brick and `5` representing an exploding brick.
 
 3. A custom Input method has been used that allows using arrow keys to control the paddle as well as the `a` and `d` keys.
 
-4. Power ups appear with a 50% chance when a brick is broken. Which power up appears is randomly chosen. Each powerup is represented as a collectable that falls downwards from the location of the brick that was broken. If not collected, it goes out of bounds and is removed from the game. Each powerup is represented by a unique chracter:
-* `E`: "Expand Paddle"
-* `S`: "Shrink Paddle"
-* `M`: "Ball Multiplier" (a.k.a Multi-ball)
-* `F`: "Fast Ball"
-* `T`: "Thru Ball"
-* `G`: "Paddle Grab"
+4. Power ups appear with a 50% chance when a brick is broken. Which power up appears is randomly chosen. Each powerup is represented as a collectable that falls downwards from the location of the brick that was broken. If not collected, it goes out of bounds and is removed from the game.
 
 5. If a powerup that is already active is collected again, the duration for that powerup will be topped up to its original duration.
 
