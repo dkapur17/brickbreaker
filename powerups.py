@@ -30,7 +30,6 @@ class PowerUp:
         self.expired = True
 
     def get_time_left(self):
-        print("Hello")
         return f"{self.duration - (time() - self.init_time):.2f}s"
 
 
