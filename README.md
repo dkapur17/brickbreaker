@@ -35,7 +35,7 @@ On destroying a brick, a random powerup may appear in the bricks position and st
 
 Each powerup lasts for 15 seconds (except for Ball Multiplier, which has no time duration).
 
-Every time you do damage to a brick, your score increases by 1. If you directly destroy a brick (using Thru-ball or an exploding brick), you get a score equivalent to its strength (the strength of an exploding brick itself is 1). If you manage to destroy an unbreakable brick (using Thru-ball or an exploding brick), your score increases by 4 points.
+Every time you do damage to a brick, your score increases by 1. If you directly destroy a brick (using Thru-ball or an exploding brick), you get a score equivalent to its strength (the strength of an exploding brick itself is 1). If you manage to destroy an unbreakable brick (using Thru-ball or an exploding brick), your score increases by 5 points.
 
 
 ## Specifications
