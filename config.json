@@ -12,5 +12,6 @@
     "brick_length": 5,
     "fast_ball_mutliplier": 1.5,
     "powerup_duration": 15,
-    "powerup_prob": 0.5
+    "powerup_prob": 0.5,
+    "drop_interval": 30
 }

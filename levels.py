@@ -39,6 +39,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
     BRICK_LENGTH = config["brick_length"]
     FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
     POWERUP_PROB = config["powerup_prob"]
+    DROP_INTERVAL = config["drop_interval"]
     MAX_LIVES = lives
 
     _input = utilities.Input()
@@ -49,6 +50,8 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
     paddle=Paddle(SMALL_PADDLE_SIZE, MEDIUM_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
     board=Board(HEIGHT,WIDTH)
     bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH, f"level{level}")
+
+    last_drop_time = 0
 
     show_level_screen(level)
 
@@ -67,7 +70,6 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
         active_powerups = []
 
         while True:
-            
             if init_times[MAX_LIVES - paddle.lives] != -1:
                 time_segments[MAX_LIVES-paddle.lives] = time() - init_times[MAX_LIVES - paddle.lives]
             
@@ -81,6 +83,15 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
                     init_times[MAX_LIVES - paddle.lives] = time()
                 for ball in balls:
                     ball.launch()
+
+            if(int(time_elapsed + sum(time_segments) )> 0 and int(time_elapsed + sum(time_segments)) % DROP_INTERVAL == 0):
+                if(int(time() - last_drop_time) >= DROP_INTERVAL and init_times[MAX_LIVES-paddle.lives] != -1):
+                    last_drop_time = time()
+                    for brick in bricks:
+                        brick.y += 1
+                        if brick.y == paddle.y:
+                            bricks_left = len(list(filter(lambda brick: brick.strength != -1, bricks)))
+                            return score, time_elapsed + sum(time_segments),"lose",bricks_left,0,0
             
             board.update(paddle, balls, bricks, on_screen_powerups)
 
