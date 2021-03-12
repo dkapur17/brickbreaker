@@ -97,7 +97,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
 
             for ball in balls:
                 ball.inbound, brick_x, brick_y = ball.move(board, paddle)
-                bricks, score = collision_handler.collide_with_brick(bricks, brick_x, brick_y, score, on_screen_powerups, paddle, ball.thru, POWERUP_PROB)
+                bricks, score = collision_handler.collide_with_brick(bricks, brick_x, brick_y, score, on_screen_powerups, paddle, ball.thru, POWERUP_PROB, ball)
                 board.update(paddle, balls, bricks, on_screen_powerups)
 
             balls = list(filter(lambda ball: ball.inbound, balls))
@@ -108,7 +108,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
             powerup_values["multiBall"] = len(balls)
 
             for powerup in on_screen_powerups:
-                powerup.move(HEIGHT)
+                powerup.move(HEIGHT, WIDTH)
                 if powerup.collected(paddle):
                     powerup.activate(paddle, balls)
                     if powerup.name == "multiBall":

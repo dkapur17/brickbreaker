@@ -39,7 +39,7 @@ def main():
         else:
             print("Boss Level")
             exit()
-
+            
         cursor.show()
         # Show endscreen (either Game Over or You Win
     finally:
