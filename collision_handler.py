@@ -37,6 +37,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                 explosion_scores = [b.strength for b in destroyed_bricks]
                 explosion_scores = [1 if s == -2 else s for s in explosion_scores]
                 explosion_scores = [5 if s == -1 else s for s in explosion_scores]
+                explosion_scores = [choice([1,2,3]) if s == 6 else s for s in explosion_scores]
                 score += sum(explosion_scores)
                 bricks = [b for b in post_explosion_bricks]
                 for b in destroyed_bricks:
@@ -49,6 +50,8 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                     bricks.remove(brick)
                     if brick.strength in [1,2,3]:
                         score += brick.strength
+                    elif brick.strength == 6:
+                        score += choice([1,2,3])
                     elif brick.strength == -1:
                         score += 5
                     elif brick.strength == -2:
@@ -68,5 +71,11 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                         bricks.append(Brick1(brick.length, brick.x, brick.y))
                     elif brick.strength == 3:
                         bricks.append(Brick2(brick.length, brick.x, brick.y))
+                    elif brick.strength == 6:
+                        bricks.append(choice([
+                            Brick1(brick.length, brick.x, brick.y),
+                            Brick2(brick.length, brick.x, brick.y),
+                            Brick3(brick.length, brick.x, brick.y)
+                        ]))
             break
     return bricks,score

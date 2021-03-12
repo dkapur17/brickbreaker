@@ -7,9 +7,10 @@ import tty
 import signal
 from time import sleep
 from re import sub
+from random import choice
 
 import header
-from brick import Brick1, Brick2, Brick3, BrickU, BrickE
+from brick import Brick1, Brick2, Brick3, BrickU, BrickE, BrickR
 
 
 class Cursor:
@@ -65,7 +66,8 @@ def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values):
     padding = (os.get_terminal_size().columns - WIDTH)//2
     for row in HEADER:
         print(' '*padding + ''.join(row))
-    brick_colors = {'1': Fore.GREEN,'2': Fore.YELLOW,'3': Fore.RED,'4': Fore.WHITE, '5': Fore.BLUE}
+    colors = [Fore.GREEN, Fore.YELLOW, Fore.RED, Fore.WHITE, Fore.BLUE]
+    brick_colors = {'1': colors[0],'2': colors[1],'3': colors[2],'4': colors[3], '5': colors[4], '6': choice(colors[:3])}
     for row in board:
         s=''
         for ch in row:
@@ -93,7 +95,7 @@ def init_bricks(brick_length, board_width, level):
         print("Could not locate required layout file")
         exit()
     i,j=0,0
-    brick_list = {"1": Brick1, "2": Brick2, "3": Brick3, "4": BrickU, "5": BrickE}
+    brick_list = {"1": Brick1, "2": Brick2, "3": Brick3, "4": BrickU, "5": BrickE, "6": BrickR}
     try:
         for x in range(21, board_width-21, brick_length):
             for y in range(4,17):
@@ -104,8 +106,8 @@ def init_bricks(brick_length, board_width, level):
             i = 0
         return bricks
     except:
-        print("The brick layout file must be 13x13 in size and only have characyer '.','1','2','3', '4' and '5'")
+        print("The brick layout file must be 13x13 in size and only have characyer '.','1','2','3', '4','5','6'")
         exit()
 
 def get_brick_chars():
-    return '12345'
+    return '123456'

@@ -1,3 +1,5 @@
+from random import choice
+
 class Brick:
     def __init__(self,strength,length,x,y):
         self.strength = strength
@@ -35,3 +37,8 @@ class BrickE(Brick):
         self.content = ['5']*self.length
     def detect_collision(self,ball):
         pass
+
+class BrickR(Brick):
+    def __init__(self, length, x, y):
+        super().__init__(6, length, x, y)
+        self.content = ['6']*self.length
