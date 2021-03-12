@@ -84,13 +84,13 @@ def fetch_configurations(file_name):
     return config
 
 
-def init_bricks(brick_length, board_width):
+def init_bricks(brick_length, board_width, level):
     bricks = []
     try:
-        with open('brick_layout.txt') as f:
+        with open('./layouts/' + level+ '.txt') as f:
             data = f.read().split('\n')
     except:
-        print("Could not locate brick_layout.txt")
+        print("Could not locate required layout file")
         exit()
     i,j=0,0
     brick_list = {"1": Brick1, "2": Brick2, "3": Brick3, "4": BrickU, "5": BrickE}
