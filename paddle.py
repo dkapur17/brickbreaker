@@ -13,6 +13,7 @@ class Paddle():
         self.y = self.board_height - self.bottom_padding
         self.speed = speed
         self.lives = max_lives
+        self.shooting = False
         
     def move(self,direction, balls):
         if direction == 'left':
@@ -33,15 +34,35 @@ class Paddle():
         self.content = ['▀']*self.curr_size
         self.x = (self.board_width//2) - (self.curr_size//2)
         self.y = self.board_height - self.bottom_padding
+        self.shooting = False
 
     def grow(self):
         self.curr_size = self.max_size
         self.content = ['▀']*self.curr_size
+        if self.shooting:
+            self.content[0] = '╚'
+            self.content[-1] = '╝'
 
     def shrink(self):
         self.curr_size = self.min_size
         self.content = ['▀']*self.curr_size
+        if self.shooting:
+            self.content[0] = '╚'
+            self.content[-1] = '╝'
     
     def reset_size(self):
         self.curr_size = self.norm_size
         self.content = ['▀']*self.curr_size
+        if self.shooting:
+            self.content[0] = '╚'
+            self.content[-1] = '╝'
+
+    def enableShooting(self):
+        self.content[0] = '╚'
+        self.content[-1] = '╝'
+        self.shooting = True
+
+    def disableShooting(self):
+        self.content[0] = '▀'
+        self.content[-1] = '▀'
+        self.shooting = False

@@ -143,3 +143,20 @@ class ThruBall(PowerUp):
         super().deactivate()
         for ball in balls:
             ball.thru = False
+
+class LaserPaddle(PowerUp):
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
+        self.name = "laserPaddle"
+        self.content = 'L'
+    
+    def activate(self, paddle, balls):
+        super().activate()
+        paddle.enableShooting()
+    
+    def deactivate(self, paddle, balls):
+        super().deactivate()
+        paddle.disableShooting()
+
+def get_powerup_list(x,y,vel_x):
+    return [ExpandPaddle(x,y,vel_x),ShrinkPaddle(x,y,vel_x), FastBall(x,y,vel_x), PaddleGrab(x,y,vel_x), MultiBall(x,y,vel_x), ThruBall(x,y,vel_x), LaserPaddle(x,y,vel_x)]

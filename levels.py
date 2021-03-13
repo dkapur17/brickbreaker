@@ -11,6 +11,7 @@ import collision_handler
 from board import Board
 from paddle import Paddle
 from ball import Ball
+from bullet import Bullet
 
 def show_level_screen(level):
     a,b,c,d,e,f,g = art.get_level_art(level)
@@ -40,6 +41,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
     FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
     POWERUP_PROB = config["powerup_prob"]
     DROP_INTERVAL = config["drop_interval"]
+    FIRE_DELAY = config["fire_delay"]
     MAX_LIVES = lives
 
     _input = utilities.Input()
@@ -64,10 +66,13 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
             "fastBall": 0,
             "paddleGrab": 0,
             "multiBall": 1,
-            "thruBall": 0
+            "thruBall": 0,
+            "laserPaddle": 0
         }
         on_screen_powerups = []
         active_powerups = []
+        on_screen_bullets = []
+        last_fire_time = -1
 
         while True:
             if init_times[MAX_LIVES - paddle.lives] != -1:
@@ -86,6 +91,18 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
                     init_times[MAX_LIVES - paddle.lives] = time()
                 for ball in balls:
                     ball.launch()
+            elif ip == 'enter':
+                if paddle.shooting:
+                    if last_fire_time == -1 or time() - last_fire_time > FIRE_DELAY:
+                        on_screen_bullets.append(Bullet(paddle.x, paddle.y-1))
+                        on_screen_bullets.append(Bullet(paddle.x + paddle.curr_size-1, paddle.y-1))
+                        last_fire_time = time()
+
+            for bullet in on_screen_bullets:
+                brick_x, brick_y = bullet.move(board)
+                bricks, score = collision_handler.collide_with_brick(bricks, brick_x, brick_y, score, on_screen_powerups, paddle, ball.thru, POWERUP_PROB, ball)
+
+            on_screen_bullets = list(filter(lambda bullet: bullet.inbound, on_screen_bullets))
 
             if(int(sum(time_segments) )> 0 and int(sum(time_segments)) % DROP_INTERVAL == 0):
                 if(int(time() - last_drop_time) >= DROP_INTERVAL and init_times[MAX_LIVES-paddle.lives] != -1):
@@ -96,12 +113,12 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
                             bricks_left = len(list(filter(lambda brick: brick.strength != -1, bricks)))
                             return score, time_elapsed + sum(time_segments),"lose",bricks_left,0,0
             
-            board.update(paddle, balls, bricks, on_screen_powerups)
+            board.update(paddle, balls, bricks, on_screen_powerups, on_screen_bullets)
 
             for ball in balls:
                 ball.inbound, brick_x, brick_y = ball.move(board, paddle)
                 bricks, score = collision_handler.collide_with_brick(bricks, brick_x, brick_y, score, on_screen_powerups, paddle, ball.thru, POWERUP_PROB, ball)
-                board.update(paddle, balls, bricks, on_screen_powerups)
+                board.update(paddle, balls, bricks, on_screen_powerups, on_screen_bullets)
 
             balls = list(filter(lambda ball: ball.inbound, balls))
 
@@ -137,7 +154,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
             on_screen_powerups = list(filter(lambda powerup: powerup.inbound, on_screen_powerups))
             active_powerups = list(filter(lambda powerup: not powerup.expired, active_powerups))
 
-            board.update(paddle, balls, bricks, on_screen_powerups)
+            board.update(paddle, balls, bricks, on_screen_powerups, on_screen_bullets)
 
             utilities.print_frame(score, paddle.lives, time_elapsed + sum(time_segments), board.content, WIDTH, powerup_values)
 
