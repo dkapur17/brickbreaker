@@ -42,7 +42,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                 bricks = [b for b in post_explosion_bricks]
                 for b in destroyed_bricks:
                     if uniform(0,1) <= powerup_prob:
-                        powerups = [ExpandPaddle(b.x,b.y,ball.vel_x,ball.vel_y, thru),ShrinkPaddle(b.x,b.y,ball.vel_x,ball.vel_y, thru), FastBall(b.x,b.y,ball.vel_x,ball.vel_y, thru), PaddleGrab(b.x,b.y,ball.vel_x,ball.vel_y, thru), MultiBall(b.x,b.y,ball.vel_x,ball.vel_y, thru), ThruBall(b.x,b.y,ball.vel_x,ball.vel_y, thru)]
+                        powerups = [ExpandPaddle(b.x,b.y,ball.vel_x),ShrinkPaddle(b.x,b.y,ball.vel_x), FastBall(b.x,b.y,ball.vel_x), PaddleGrab(b.x,b.y,ball.vel_x), MultiBall(b.x,b.y,ball.vel_x), ThruBall(b.x,b.y,ball.vel_x)]
                         on_screen_powerups.append(choice(powerups))
             else:
                 # If not exploding brick, but thru
@@ -57,7 +57,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                     elif brick.strength == -2:
                         score += 1
                     if uniform(0,1) <= powerup_prob:
-                        powerups = [ExpandPaddle(x,y,ball.vel_x,ball.vel_y, thru),ShrinkPaddle(x,y,ball.vel_x,ball.vel_y, thru), FastBall(x,y,ball.vel_x,ball.vel_y, thru), PaddleGrab(x,y,ball.vel_x,ball.vel_y, thru), MultiBall(x,y,ball.vel_x,ball.vel_y, thru), ThruBall(x,y,ball.vel_x,ball.vel_y, thru)]
+                        powerups = [ExpandPaddle(x,y,ball.vel_x),ShrinkPaddle(x,y,ball.vel_x), FastBall(x,y,ball.vel_x), PaddleGrab(x,y,ball.vel_x), MultiBall(x,y,ball.vel_x), ThruBall(x,y,ball.vel_x)]
                         on_screen_powerups.append(choice(powerups))
                 # If not exploding brick and not thru
                 else:
@@ -65,7 +65,7 @@ def collide_with_brick(bricks, x, y,score,on_screen_powerups,paddle, thru, power
                         bricks.remove(brick)
                         score += 1
                     if brick.strength == 1 and uniform(0,1) <= powerup_prob:
-                        powerups = [ExpandPaddle(x,y,ball.vel_x,ball.vel_y, thru),ShrinkPaddle(x,y,ball.vel_x,ball.vel_y, thru), FastBall(x,y,ball.vel_x,ball.vel_y, thru), PaddleGrab(x,y,ball.vel_x,ball.vel_y, thru), MultiBall(x,y,ball.vel_x,ball.vel_y, thru), ThruBall(x,y,ball.vel_x,ball.vel_y, thru)]
+                        powerups = [ExpandPaddle(x,y,ball.vel_x),ShrinkPaddle(x,y,ball.vel_x), FastBall(x,y,ball.vel_x), PaddleGrab(x,y,ball.vel_x), MultiBall(x,y,ball.vel_x), ThruBall(x,y,ball.vel_x)]
                         on_screen_powerups.append(choice(powerups))
                     elif brick.strength == 2:
                         bricks.append(Brick1(brick.length, brick.x, brick.y))

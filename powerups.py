@@ -4,11 +4,11 @@ from utilities import fetch_configurations
 DURATION = fetch_configurations('config.json')['powerup_duration']
 
 class PowerUp:
-    def __init__(self,x,y,vel_x,vel_y,thru):
+    def __init__(self,x,y,vel_x):
         self.x = x
         self.y = y
         self.vel_x = vel_x
-        self.vel_y = (vel_y if thru else -vel_y)
+        self.vel_y = -1
         self.inbound = True
         self.duration = DURATION
         self.expired = False
@@ -47,8 +47,8 @@ class PowerUp:
 
 
 class ExpandPaddle(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
-        super().__init__(x,y,vel_x,vel_y,thru)
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
         self.name = "expandPaddle"
         self.content = 'E'
 
@@ -61,8 +61,8 @@ class ExpandPaddle(PowerUp):
         paddle.reset_size()
 
 class ShrinkPaddle(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
-        super().__init__(x,y,vel_x,vel_y,thru)
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
         self.name = "shrinkPaddle"
         self.content = 'S'
     
@@ -75,8 +75,8 @@ class ShrinkPaddle(PowerUp):
         paddle.reset_size()
 
 class FastBall(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
-        super().__init__(x,y,vel_x,vel_y,thru)
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
         self.name = "fastBall"
         self.content = 'F'
 
@@ -91,8 +91,8 @@ class FastBall(PowerUp):
             ball.curr_multiplier = 1
 
 class PaddleGrab(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
-        super().__init__(x,y,vel_x,vel_y,thru)
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
         self.name = "paddleGrab"
         self.content = 'G'
     
@@ -107,9 +107,9 @@ class PaddleGrab(PowerUp):
             ball.sticky = False
 
 class MultiBall(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
+    def __init__(self,x,y,vel_x):
         self.x,self.y = x,y
-        self.vel_x, self.vel_y = vel_x, (vel_y if thru else -vel_y)
+        self.vel_x, self.vel_y = vel_x, -1
         self.name = "multiBall"
         self.inbound = True
         self.content = 'M'
@@ -125,8 +125,8 @@ class MultiBall(PowerUp):
         pass
 
 class ThruBall(PowerUp):
-    def __init__(self,x,y,vel_x,vel_y,thru):
-        super().__init__(x,y,vel_x,vel_y,thru)
+    def __init__(self,x,y,vel_x):
+        super().__init__(x,y,vel_x)
         self.name = "thruBall"
         self.content = 'T'
 

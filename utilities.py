@@ -52,6 +52,8 @@ class Input:
                 text = 'space'
             elif ip == b'\r':
                 text = 'enter'
+            elif ip in [b's', b'S']:
+                text = 'skip'
             else:
                 text = 'none'
             sleep(timeout)

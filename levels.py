@@ -76,6 +76,9 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
             ip = _input.get_parsed_input(0.07)
             if ip == 'quit':
                 return 0,0,0,0,0,1
+            elif ip == 'skip':
+                bricks_left = len(list(filter(lambda brick: brick.strength != -1, bricks)))
+                return score, sum(time_segments), "win", 0, paddle.lives, 0
             if ip in ['left', 'right']:
                 paddle.move(ip, balls)
             elif ip == 'space':
@@ -84,7 +87,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
                 for ball in balls:
                     ball.launch()
 
-            if(int(time_elapsed + sum(time_segments) )> 0 and int(time_elapsed + sum(time_segments)) % DROP_INTERVAL == 0):
+            if(int(sum(time_segments) )> 0 and int(sum(time_segments)) % DROP_INTERVAL == 0):
                 if(int(time() - last_drop_time) >= DROP_INTERVAL and init_times[MAX_LIVES-paddle.lives] != -1):
                     last_drop_time = time()
                     for brick in bricks:
