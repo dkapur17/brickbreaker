@@ -13,5 +13,5 @@
     "fast_ball_mutliplier": 1.5,
     "powerup_duration": 15,
     "powerup_prob": 1,
-    "drop_interval": 10
+    "drop_interval": 30
 }

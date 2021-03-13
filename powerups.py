@@ -8,12 +8,16 @@ class PowerUp:
         self.x = x
         self.y = y
         self.vel_x = vel_x
-        self.vel_y = -1
+        self.vel_y = -2
         self.inbound = True
         self.duration = DURATION
         self.expired = False
     
     def move(self, HEIGHT, WIDTH):
+        
+        self.vel_y += 0.5
+        self.vel_y = min(self.vel_y, 1)
+
         self.x += self.vel_x
         self.y += self.vel_y
 
@@ -37,7 +41,7 @@ class PowerUp:
         return time() - self.init_time >= self.duration
 
     def collected(self, paddle):
-        return self.y == paddle.y and self.x in range(paddle.x, paddle.x + paddle.curr_size+1)
+        return int(self.y) == paddle.y and self.x in range(paddle.x, paddle.x + paddle.curr_size+1)
     
     def deactivate(self):
         self.expired = True
