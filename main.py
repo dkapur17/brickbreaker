@@ -36,10 +36,8 @@ def main():
             exit()
         elif state == "lose":
             return endscreen.print_endscreen(score, bricks_left)
-        else:
-            print("Boss Level")
-            exit()
-            
+        
+        levels.boss_level(config, lives, score, time_elapsed)
         cursor.show()
         # Show endscreen (either Game Over or You Win
     finally:

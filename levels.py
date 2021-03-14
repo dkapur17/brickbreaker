@@ -170,3 +170,31 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
     if bricks_left == 0:
         paddle.lives += 1
     return score, sum(time_segments), ("win" if bricks_left == 0 else "lose"), bricks_left, paddle.lives, 0
+
+def boss_level(config, lives, score, time_elapsed):
+    
+    HEIGHT = config["height"]
+    WIDTH = config["width"]
+    SMALL_PADDLE_SIZE = config["small_paddle_size"]
+    MEDIUM_PADDLE_SIZE = config["medium_paddle_size"]
+    LARGE_PADDLE_SIZE = config["large_paddle_size"]
+    PADDLE_BOTTOM_PADDING = config["paddle_bottom_padding"]
+    PADDLE_SPEED = config["paddle_speed"]
+    BRICK_LENGTH = config["brick_length"]
+    FAST_BALL_MULTIPLIER = config["fast_ball_mutliplier"]
+    POWERUP_PROB = config["powerup_prob"]
+    DROP_INTERVAL = config["drop_interval"]
+    FIRE_DELAY = config["fire_delay"]
+    MAX_LIVES = lives
+
+    _input = utilities.Input()
+
+    init_times = [-1]*MAX_LIVES
+    time_segments = [0]*MAX_LIVES
+
+    paddle=Paddle(SMALL_PADDLE_SIZE, MEDIUM_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
+    board=Board(HEIGHT,WIDTH)
+
+    show_level_screen(3)
+
+    return

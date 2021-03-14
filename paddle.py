@@ -42,6 +42,8 @@ class Paddle():
         if self.shooting:
             self.content[0] = '╚'
             self.content[-1] = '╝'
+        if self.x + self.curr_size >= self.board_width:
+            self.x = self.board_width - self.curr_size - 1
 
     def shrink(self):
         self.curr_size = self.min_size
