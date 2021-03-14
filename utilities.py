@@ -64,7 +64,7 @@ class Input:
             signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return None
 
-def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values):
+def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values, ufo_lives = None):
     os.system('clear')
     HEADER = header.create_header(score, lives, time_elapsed)
     padding = (os.get_terminal_size().columns - WIDTH)//2
@@ -80,9 +80,13 @@ def print_frame(score, lives, time_elapsed, board, WIDTH, powerup_values):
             else:
                 s+=ch
         print(' '*padding + s)
-    active_powerup_values = [(sub(r'([A-Z])', r' \g<1>', k).title() + ": " + str(v)) for k,v in zip(powerup_values.keys(),powerup_values.values()) if v != 0]
-    print("Active Powerups".center(os.get_terminal_size().columns))
-    print((' '.join(active_powerup_values)).center(os.get_terminal_size().columns))
+    if ufo_lives == None:
+        active_powerup_values = [(sub(r'([A-Z])', r' \g<1>', k).title() + ": " + str(v)) for k,v in zip(powerup_values.keys(),powerup_values.values()) if v != 0]
+        print("Active Powerups".center(os.get_terminal_size().columns))
+        print((' '.join(active_powerup_values)).center(os.get_terminal_size().columns))
+    else:
+        print(("Boss Lives:" + Fore.BLUE + ' ♥'*ufo_lives + Fore.RESET).center(os.get_terminal_size().columns))
+
 
 def fetch_configurations(file_name):
     with open(file_name) as f:

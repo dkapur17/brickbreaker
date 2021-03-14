@@ -24,20 +24,28 @@ def main():
         score, time_elapsed, state, bricks_left, lives, quit_stat = levels.load_level(1,config, MAX_LIVES)
         if quit_stat == 1:
             os.system('clear')
+            os.system('stty echo')
             cursor.show()
             exit()
         elif state == "lose":
-            return endscreen.print_endscreen(score, bricks_left)
+            return endscreen.print_endscreen(score, state)
         
         score, time_elapsed, state, bricks_left, lives, quit_stat = levels.load_level(2, config, lives, score, time_elapsed)
         if quit_stat == 1:
             os.system('clear')
+            os.system('stty echo')
             cursor.show()
             exit()
         elif state == "lose":
-            return endscreen.print_endscreen(score, bricks_left)
+            return endscreen.print_endscreen(score, state)
         
-        levels.boss_level(config, lives, score, time_elapsed)
+        score, state, quit_stat = levels.boss_level(config, lives, score, time_elapsed)
+        if quit_stat == 1:
+            os.system('clear')
+            os.system('stty echo')
+            cursor.show()
+            exit()
+        endscreen.print_endscreen(score, state)
         cursor.show()
         # Show endscreen (either Game Over or You Win
     finally:

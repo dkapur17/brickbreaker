@@ -247,9 +247,18 @@ def boss_level(config, lives, score, time_elapsed):
                 break
             
             ufo.move(paddle.x)
+
+            if ufo.test_collision(balls):
+                score += 1
+
+            if ufo.lives <= 0:
+                return score, "win", 0
+
             board.update(paddle, balls, None, None, None, ufo)
-            utilities.print_frame(score, paddle.lives, time_elapsed + sum(time_segments), board.content, WIDTH, powerup_values)
+            utilities.print_frame(score, paddle.lives, time_elapsed + sum(time_segments), board.content, WIDTH, powerup_values, ufo.lives)
 
         paddle.lives -= 1
         paddle.reset()
+        if paddle.lives == 0:
+            return score, "lose", 0
     return
