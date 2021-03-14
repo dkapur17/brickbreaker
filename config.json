@@ -12,9 +12,12 @@
     "brick_length": 5,
     "fast_ball_mutliplier": 1.5,
     "powerup_duration": 15,
-    "powerup_prob": 1,
+    "powerup_prob": 0.5,
     "drop_interval": 30,
     "fire_delay": 0.5,
     "ufo_padding": 3,
-    "ufo_lives": 5
+    "ufo_lives": 10,
+    "ufo_def_1": 7,
+    "ufo_def_2": 3,
+    "bomb_interval": 2
 }

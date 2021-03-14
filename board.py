@@ -32,7 +32,7 @@ class Board:
         self.content[self.height-1][0]='╚'
         self.content[self.height-1][self.width-1]='╝'
 
-    def update(self,paddle,balls, bricks, on_screen_powerups, on_screen_bullets, ufo=None):
+    def update(self,paddle,balls, bricks, on_screen_powerups, on_screen_bullets, ufo=None, on_screen_bombs=None):
         self.clear()
         if ufo == None:
             for brick in bricks:
@@ -47,6 +47,10 @@ class Board:
         else:
             for i in range(ufo.height):
                 self.content[ufo.y + i][ufo.x:ufo.x+ufo.width] = ufo.content[i]
+            for bomb in on_screen_bombs:
+                self.content[bomb.y][bomb.x] = bomb.content
             for ball in balls:
                 self.content[ball.y][ball.x] = ball.content
+            for brick in bricks:
+                self.content[brick.y][brick.x: brick.x + brick.length] = brick.content
             self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] = paddle.content
