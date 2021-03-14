@@ -12,6 +12,7 @@ from board import Board
 from paddle import Paddle
 from ball import Ball
 from bullet import Bullet
+from ufo import UFO
 
 def show_level_screen(level):
     a,b,c,d,e,f,g = art.get_level_art(level)
@@ -55,7 +56,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
 
     last_drop_time = 0
 
-    show_level_screen(level)
+    # show_level_screen(level)
 
     while paddle.lives > 0:
         balls = []
@@ -91,7 +92,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
                     init_times[MAX_LIVES - paddle.lives] = time()
                 for ball in balls:
                     ball.launch()
-            elif ip == 'enter':
+            elif ip == 'fire':
                 if paddle.shooting:
                     if last_fire_time == -1 or time() - last_fire_time > FIRE_DELAY:
                         on_screen_bullets.append(Bullet(paddle.x, paddle.y-1))
@@ -171,6 +172,7 @@ def load_level(level, config, lives, score=0, time_elapsed=0):
         paddle.lives += 1
     return score, sum(time_segments), ("win" if bricks_left == 0 else "lose"), bricks_left, paddle.lives, 0
 
+# Return score, win/lose, quit flag
 def boss_level(config, lives, score, time_elapsed):
     
     HEIGHT = config["height"]
@@ -185,6 +187,8 @@ def boss_level(config, lives, score, time_elapsed):
     POWERUP_PROB = config["powerup_prob"]
     DROP_INTERVAL = config["drop_interval"]
     FIRE_DELAY = config["fire_delay"]
+    UFO_PADDING = config["ufo_padding"]
+    UFO_LIVES = config["ufo_lives"]
     MAX_LIVES = lives
 
     _input = utilities.Input()
@@ -194,7 +198,58 @@ def boss_level(config, lives, score, time_elapsed):
 
     paddle=Paddle(SMALL_PADDLE_SIZE, MEDIUM_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
     board=Board(HEIGHT,WIDTH)
-
+    bricks = []
     show_level_screen(3)
+    ufo = UFO(paddle.x, UFO_PADDING, UFO_LIVES)
+    
+    while paddle.lives > 0:
+        balls = []
+        balls.append(Ball(paddle, max_multiplier=FAST_BALL_MULTIPLIER))
+        powerup_values = {
+            "expandPaddle": 0,
+            "shrinkPaddle": 0,
+            "fastBall": 0,
+            "paddleGrab": 0,
+            "multiBall": 1,
+            "thruBall": 0,
+            "laserPaddle": 0
+        }
+        on_screen_powerups = []
+        active_powerups = []
+        on_screen_bullets = []
+        last_fire_time = -1
 
+        while True:
+            if init_times[MAX_LIVES - paddle.lives] != -1:
+                time_segments[MAX_LIVES-paddle.lives] = time() - init_times[MAX_LIVES -paddle.lives]
+
+            ip = _input.get_parsed_input(0.07)
+            if ip == 'quit':
+                return 0,0,1
+            elif ip == 'skip':
+                return score, "win", 0
+
+            if ip in['left', 'right']:
+                paddle.move(ip, balls)
+            elif ip == 'space':
+                if init_times[MAX_LIVES - paddle.lives] == -1:
+                    init_times[MAX_LIVES - paddle.lives] = time()
+                for ball in balls:
+                    ball.launch()
+            
+            for ball in balls:
+                ball.inbound, _, _ = ball.move(board, paddle)
+                board.update(paddle, balls, None, None, None, ufo)
+            
+            balls = list(filter(lambda ball: ball.inbound, balls))
+            
+            if not len(balls):
+                break
+            
+            ufo.move(paddle.x)
+            board.update(paddle, balls, None, None, None, ufo)
+            utilities.print_frame(score, paddle.lives, time_elapsed + sum(time_segments), board.content, WIDTH, powerup_values)
+
+        paddle.lives -= 1
+        paddle.reset()
     return

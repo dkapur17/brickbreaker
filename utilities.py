@@ -48,6 +48,8 @@ class Input:
                 text = 'left'
             elif ip in [b'\x1b[C', b'd', b'D']:
                 text = 'right'
+            elif ip in [b'\x1b[A', b'w', b'W']:
+                text = 'fire'
             elif ip == b' ':
                 text = 'space'
             elif ip == b'\r':

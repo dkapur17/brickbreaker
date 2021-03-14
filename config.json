@@ -8,11 +8,13 @@
     "large_paddle_size": 15,
     "paddle_bottom_padding": 4,
     "paddle_speed": 4,
-    "max_lives": 3,
+    "max_lives": 5,
     "brick_length": 5,
     "fast_ball_mutliplier": 1.5,
     "powerup_duration": 15,
     "powerup_prob": 1,
     "drop_interval": 30,
-    "fire_delay": 0.5
+    "fire_delay": 0.5,
+    "ufo_padding": 3,
+    "ufo_lives": 5
 }

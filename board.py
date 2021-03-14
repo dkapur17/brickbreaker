@@ -32,14 +32,21 @@ class Board:
         self.content[self.height-1][0]='╚'
         self.content[self.height-1][self.width-1]='╝'
 
-    def update(self,paddle,balls, bricks, on_screen_powerups, on_screen_bullets):
+    def update(self,paddle,balls, bricks, on_screen_powerups, on_screen_bullets, ufo=None):
         self.clear()
-        for brick in bricks:
-            self.content[brick.y][brick.x: brick.x + brick.length] = brick.content
-        for powerup in on_screen_powerups:
-            self.content[floor(powerup.y)][powerup.x] = powerup.content
-        for bullet in on_screen_bullets:
-            self.content[bullet.y][bullet.x] = bullet.content
-        for ball in balls:
-            self.content[ball.y][ball.x] = ball.content
-        self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] =  paddle.content
+        if ufo == None:
+            for brick in bricks:
+                self.content[brick.y][brick.x: brick.x + brick.length] = brick.content
+            for powerup in on_screen_powerups:
+                self.content[floor(powerup.y)][powerup.x] = powerup.content
+            for bullet in on_screen_bullets:
+                self.content[bullet.y][bullet.x] = bullet.content
+            for ball in balls:
+                self.content[ball.y][ball.x] = ball.content
+            self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] =  paddle.content
+        else:
+            for i in range(ufo.height):
+                self.content[ufo.y + i][ufo.x:ufo.x+ufo.width] = ufo.content[i]
+            for ball in balls:
+                self.content[ball.y][ball.x] = ball.content
+            self.content[paddle.y][paddle.x: paddle.x + paddle.curr_size] = paddle.content
