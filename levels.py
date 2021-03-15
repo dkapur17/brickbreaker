@@ -199,7 +199,8 @@ def boss_level(config, lives, score, time_elapsed):
 
     paddle=Paddle(SMALL_PADDLE_SIZE, MEDIUM_PADDLE_SIZE, LARGE_PADDLE_SIZE, HEIGHT, WIDTH, PADDLE_BOTTOM_PADDING, PADDLE_SPEED, MAX_LIVES)
     board=Board(HEIGHT,WIDTH)
-    bricks = []
+    init_bricks = utilities.init_bricks(BRICK_LENGTH, WIDTH, "boss")
+    bricks = [brick for brick in init_bricks]
     show_level_screen(3)
     ufo = UFO(paddle.x, UFO_PADDING, UFO_LIVES)
     defences_left = 2
@@ -265,7 +266,7 @@ def boss_level(config, lives, score, time_elapsed):
                 defences_left -= 1
                 ball.y = ufo.y + ufo.height + 3
                 ball.vel_y = 1
-                bricks = []
+                bricks = [brick for brick in init_bricks]
                 for i in range(1, WIDTH-2, BRICK_LENGTH):
                     bricks.append(Brick3(BRICK_LENGTH, i, ufo.y + ufo.height + 2))
             
