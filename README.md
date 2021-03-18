@@ -1,4 +1,4 @@
-# DASS Assignment 2 - Brick Breaker
+# DASS Assignment 2,3 - Brick Breaker
 
 This is a terminal based brick breaker game. Zero GUI. The game physics makes use of a 2D grid that represents the board, with each element of the board being a single character. In each iteration of the game loop, the board is updated based on user input and other factors within the game and the new board is printed to the screen.
 
