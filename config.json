@@ -16,8 +16,8 @@
     "drop_interval": 30,
     "fire_delay": 0.5,
     "ufo_padding": 3,
-    "ufo_lives": 10,
-    "ufo_def_1": 7,
-    "ufo_def_2": 3,
+    "ufo_lives": 20,
+    "ufo_def_1": 15,
+    "ufo_def_2": 5,
     "bomb_interval": 2
 }

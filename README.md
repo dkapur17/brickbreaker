@@ -20,11 +20,11 @@ to launch the game.
 
 Use `a` and `d` or the left and right arrow keys to move the paddle. Use `space` to launch the ball. Your target is to destroy all the colored bricks on the screen. To do damage to a brick, hit it with the ball.
 
-There are 5 types of bricks in the game. Green bricks take 1 hit to destroy, Yellow ones take 2 and Red ones take 3. White bricks are unbreakable under normal circumstances. Blue bricks are called exploding bricks. Upon hitting one of them, it not just destroys the brick, but all its neighboring bricks as well. If one of its neighboring bricks is also an exploding brick, it triggers a chain reaction.
+There are 6 types of bricks in the game. Green bricks take 1 hit to destroy, Yellow ones take 2 and Red ones take 3. White bricks are unbreakable under normal circumstances. Blue bricks are called exploding bricks. Upon hitting one of them, it not just destroys the brick, but all its neighboring bricks as well. If one of its neighboring bricks is also an exploding brick, it triggers a chain reaction. The last is a Rainbow brick. This bricks keeps changing its color and hardness to one of the first three bricks. Once the brick is hit, it stops changing its color and randomly becomes one of the standard three bricks.
 
 If the ball hits the bottom edge of the screen, you lose a life. You lose if you lose all your lives before destroying all colored bricks.
 
-On destroying a brick, a random powerup may appear in the bricks position and start moving downwards. Collect it with your paddle to gain the powerup. The powerups are:
+On destroying a brick, a random powerup may appear and follow a parabolic trajectory from the brick that was broken. Collect it with your paddle to gain the powerup. The powerups are:
 
 * `E`: "Expand Paddle" make the paddle larger
 * `S`: "Shrink Paddle" makes the paddle smaller
@@ -32,11 +32,15 @@ On destroying a brick, a random powerup may appear in the bricks position and st
 * `F`: "Fast Ball" increases the speed of each ball in play 1.5 times
 * `T`: "Thru Ball" ball goes through any bricks it touches, including unbreakable ones
 * `G`: "Paddle Grab" every time the ball hits the paddle, you can launch it at will.
+* `L`: "Laser Paddle" the paddle gets equipped with lasers on either side that can be fired by pressing the up arrow, with a cooloof of 0.5 seconds.
 
 Each powerup lasts for 15 seconds (except for Ball Multiplier, which has no time duration).
 
 Every time you do damage to a brick, your score increases by 1. If you directly destroy a brick (using Thru-ball or an exploding brick), you get a score equivalent to its strength (the strength of an exploding brick itself is 1). If you manage to destroy an unbreakable brick (using Thru-ball or an exploding brick), your score increases by 5 points.
 
+Every 30 seconds into a level, the bricks come down one step. If any brick gets to the same height as the paddle, the game is over.
+
+There are two standard levels where the paddle must break the bricks to progress to the next level. The third level is a Boss Battle where you need to destroy a Boss Enemy. The Boss is a UFO that follows the paddle and drop bombs on it. Hitting the boss will reduce its health. If the ball hits the bottom edge of the screen, the paddle loses one life and its position is reset and the UFO stops dropping bombs till the paddle launches the ball again. If a bomb hits the paddle, the paddle loses one life, but the game continues as it is, without the paddle getting reset. The UFO has 20 health. If its health falls below 16, the UFO deploys a protective layer of Green bricks under it and shoots the ball out from its protected area towards the paddle. These bricks can be broken by the ball, but don't yield any powerups. If its health falls below 6, the UFO deploys a protective layer of Red bricks, which can again be damaged and broken by the ball. Again, the ball is projected out from its protected area towards the paddle. The bombs from the UFO however, can pass directly through any bricks, and hit the paddle, so it would be best to dodge them.
 
 ## Specifications
 
