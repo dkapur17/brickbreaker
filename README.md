@@ -68,6 +68,8 @@ There are two standard levels where the paddle must break the bricks to progress
 
 13. The game is over either when the player loses all his lives or all breakable bricks in the game have been destroyed.
 
+14. A player can skip a level by hitting `s` at any point.
+
 
 ### Usage of OOP Concepts
 
